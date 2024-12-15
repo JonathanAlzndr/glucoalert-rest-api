@@ -4,6 +4,7 @@ import com.glucoalert_rest.glucoalert.model.Gejala;
 import com.glucoalert_rest.glucoalert.model.PredictRequest;
 import com.glucoalert_rest.glucoalert.model.PredictResponse;
 import com.glucoalert_rest.glucoalert.repository.GejalaRepository;
+import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,10 +17,6 @@ public class GejalaService {
 
     public PredictResponse predict(PredictRequest request) {
         List<Gejala> gejalaList = gejalaRepository.findAll();
-        StringBuilder calculations = new StringBuilder();
-        
-        calculations.append("PERHITUNGAN CF MASING-MASING GEJALA:\n");
-        calculations.append("===================================\n");
         
         // Calculate individual CFs
         double cf1 = calculateCF(gejalaList.get(0), request.getSeringMakan(), "Sering Makan", calculations);
@@ -32,9 +29,7 @@ public class GejalaService {
         double cf8 = calculateCF(gejalaList.get(7), request.getObesitas(), "Obesitas", calculations);
         double cf9 = calculateCF(gejalaList.get(8), request.getHipertensi(), "Hipertensi", calculations);
         double cf10 = calculateCF(gejalaList.get(9), request.getEtnis(), "Etnis Asia", calculations);
-    
-        calculations.append("\nPROSES KOMBINASI CF:\n");
-        calculations.append("===================\n");
+
         double cfCombine1 = combineCF(cf1, cf2, "CF1 (Sering Makan)", "CF2 (Sering Haus)", calculations);
         double cfCombine2 = combineCF(cfCombine1, cf3, "CF old", "CF3 (Sering Kencing)", calculations);
         double cfCombine3 = combineCF(cfCombine2, cf4, "CF old", "CF4 (Riwayat Diabetes)", calculations);
@@ -44,13 +39,9 @@ public class GejalaService {
         double cfCombine7 = combineCF(cfCombine6, cf8, "CF old", "CF8 (Obesitas)", calculations);
         double cfCombine8 = combineCF(cfCombine7, cf9, "CF old", "CF9 (Hipertensi)", calculations);
         double cfCombine9 = combineCF(cfCombine8, cf10, "CF old", "CF10 (Etnis Asia)", calculations);
-    
-        calculations.append("\nHASIL AKHIR:\n");
-        calculations.append("============\n");
-        calculations.append(String.format("CF Final: %.4f\n", cfCombine9));
-        calculations.append(String.format("Persentase: %.2f%%\n", cfCombine9 * 100));
-    
-        String explanation = buildExplanation(cfCombine9 * 100);
+
+        val calculations = "";
+
     
         return PredictResponse.builder()
                 .calculationDetails(calculations.toString())
