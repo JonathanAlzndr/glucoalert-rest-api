@@ -1,6 +1,7 @@
 package com.glucoalert_rest.glucoalert.controller;
 
 import com.glucoalert_rest.glucoalert.model.PredictRequest;
+import com.glucoalert_rest.glucoalert.model.PredictResponse;
 import com.glucoalert_rest.glucoalert.service.GejalaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -20,8 +21,8 @@ public class PredictController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<String> predict(@RequestBody PredictRequest request) {
-            double predictValue = gejalaService.predict(request);
-            return ResponseEntity.ok().body(predictValue + " %");
+    public ResponseEntity<PredictResponse> predict(@RequestBody PredictRequest request) {
+            PredictResponse predictValue = gejalaService.predict(request);
+            return ResponseEntity.ok().body(predictValue);
     }
 }
