@@ -23,6 +23,6 @@ public class PredictController {
     )
     public ResponseEntity<PredictResponse> predict(@RequestBody PredictRequest request) {
             PredictResponse predictValue = gejalaService.predict(request);
-            return ResponseEntity.ok().body(predictValue);
+            return ResponseEntity.ok(predictValue);
     }
 }
